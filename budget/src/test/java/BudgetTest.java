@@ -38,5 +38,24 @@ public class BudgetTest {
     @Test
     void multyMonth(){
 
+        FakeBudgetRepo budgetRepository = new FakeBudgetRepo();
+        budgetRepository.setBudgets(asList(new Budget("202201",31), new Budget("202202",280), new Budget("202203",30*100)));
+        BudgetService budgetService = new BudgetService(budgetRepository);
+        LocalDate startDate =  LocalDate.of(2022, 01, 02);
+        LocalDate endDate = LocalDate.of(2022, 01, 05);
+
+        Assertions.assertEquals(4.0, budgetService.query(startDate, endDate));
+    }
+
+    @Test
+    void overMonth(){
+
+        FakeBudgetRepo budgetRepository = new FakeBudgetRepo();
+        budgetRepository.setBudgets(asList(new Budget("202201",31), new Budget("202202",280), new Budget("202203",30*100)));
+        BudgetService budgetService = new BudgetService(budgetRepository);
+        LocalDate startDate =  LocalDate.of(2022, 01, 30);
+        LocalDate endDate = LocalDate.of(2022, 02, 05);
+
+        Assertions.assertEquals(52.0, budgetService.query(startDate, endDate));
     }
 }
