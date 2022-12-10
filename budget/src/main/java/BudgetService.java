@@ -18,16 +18,32 @@ public class BudgetService {
         YearMonth startYearMonth = YearMonth.from(startDate);
         YearMonth endYearMonth = YearMonth.from(endDate);
         Double totalBudgetAmount = 0D;
+        int startIndex =0;
+
+        // start peroid
+
+        //int endOfStartDate =startYearMonth.lengthOfMonth();
+
+        int startPeriodDays =0;
+        //int startDays = endOfStartDate - startDate.getDayOfMonth()+1;
+
         for(Budget budget : data){
             YearMonth budgetYearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
-
-            if ((startYearMonth.isBefore(budgetYearMonth) && endYearMonth.isAfter(budgetYearMonth)) )
+            if(budgetYearMonth.equals(startYearMonth))
             {
-                totalBudgetAmount += budget.getAmount();
+                if(endYearMonth.equals(startYearMonth)) {
+                    startPeriodDays = endDate.getDayOfMonth() - startDate.getDayOfMonth() + 1;
+                    totalBudgetAmount += startPeriodDays *budget.getAmount() / budgetYearMonth.lengthOfMonth() ;
+                }
+
             }
-
-
         }
+
+
+        // midle period
+
+        // end period
+
 
         return totalBudgetAmount;
     }
